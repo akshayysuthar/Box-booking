@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Box Cricket Booking Form</title>
     <!-- Firebase SDK -->
-    <script src="firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
@@ -33,10 +32,10 @@
       <input type="submit" value="Submit">
     </form>
     <!-- Firebase Initialization Script -->
+    <script src="firebase.js"></script>
+
     <script>
-      var firebaseConfig = {
-        // Your Firebase config here
-      };
+
       firebase.initializeApp(firebaseConfig);
       var db = firebase.firestore();
       // Submit Booking Form
