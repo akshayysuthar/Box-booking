@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Box Cricket Booking Form</title>
+    <!-- Firebase SDK -->
+    <script src="firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
+  </head>
+  <body>
+    <h1>Box Cricket Booking Form</h1>
+    <form id="booking-form">
+      <label for="box">Box:</label>
+      <select name="box" id="box">
+        <option value="box1">Box 1</option>
+        <option value="box2">Box 2</option>
+      </select>
+      <br>
+      <label for="start-time">Start Time:</label>
+      <input type="datetime-local" name="start-time" id="start-time">
+      <br>
+      <label for="end-time">End Time:</label>
+      <input type="datetime-local" name="end-time" id="end-time">
+      <br>
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name">
+      <br>
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email">
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+    <!-- Firebase Initialization Script -->
+    <script>
+      var firebaseConfig = {
+        // Your Firebase config here
+      };
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.firestore();
+      // Submit Booking Form
+      var bookingForm = document.getElementById("booking-form");
+      bookingForm.addEventListener("submit", function(event) {
+          event.preventDefault();
+          var box = document.getElementById("box").value;
+          var startTime = document.getElementById("start-time").value;
+          var endTime = document.getElementById("end-time").value;
+          var name = document.getElementById("name").value;
+          var email = document.getElementById("email").value;
+          db.collection("bookings").doc(box).set({
+              startTime: startTime,
+              endTime: endTime,
+              bookedBy: name,
+              email: email
+          })
+          .then(function() {
+              alert("Booking submitted successfully!");
+              bookingForm.reset();
+          })
+          .catch(function(error) {
+              console.error("Error adding document: ", error);
+          });
+      });
+    </script>
+  </body>
+</html>
