@@ -1,63 +1,51 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Box Cricket Booking</title>
-    <!-- Firebase SDK -->
-    <script src="firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <h1>Box Cricket Booking</h1>
-    <div class="box">
-      <img src="box1.jpg" alt="Box 1">
-      <p>Box 1</p>
-      <p id="box1-status"></p>
-      <p id="box1-timings"></p>
-    </div>
-    <div class="box">
-      <img src="box2.jpg" alt="Box 2">
-      <p>Box 2</p>
-      <p id="box2-status"></p>
-      <p id="box2-timings"></p>
-    </div>
-    <!-- Firebase Initialization Script -->
-    <script>
-      var firebaseConfig = {
-        // Your Firebase config here
-      };
-      firebase.initializeApp(firebaseConfig);
-      var db = firebase.firestore();
-      // Check Box 1 Status
-      var box1Status = document.getElementById("box1-status");
-      var box1Timings = document.getElementById("box1-timings");
-      db.collection("bookings").doc("box1").get().then((doc) => {
-          if (doc.exists) {
-              var data = doc.data();
-              box1Status.innerText = "Booked by " + data.bookedBy;
-              box1Timings.innerText = "From " + data.startTime + " to " + data.endTime;
-          } else {
-              box1Status.innerText = "Available";
-              box1Timings.innerText = "";
-          }
-      });
-      // Check Box 2 Status
-      var box2Status = document.getElementById("box2-status");
-      var box2Timings = document.getElementById("box2-timings");
-      db.collection("bookings").doc("box2").get().then((doc) => {
-          if (doc.exists) {
-              var data = doc.data();
-              box2Status.innerText = "Booked by " + data.bookedBy;
-              box2Timings.innerText = "From " + data.startTime + " to " + data.endTime;
-          } else {
-              box2Status.innerText = "Available";
-              box2Timings.innerText = "";
-          }
-      });
-    </script>
-  </body>
+<head>
+	<title>OpenAI API Demo</title>
+</head>
+<body>
+	<h1>Ask a Question:</h1>
+	<input type="text" id="query-input">
+	<button onclick="generateAnswer()">Generate Answer</button>
+	<h2 id="answer" style="text-align: center;"></h2>
+
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+		const API_KEY = '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';
+		const API_URL = 'https://api.openai.com/v1/';
+
+		async function generateAnswer() {
+			const queryInput = document.getElementById('query-input');
+			const prompt = queryInput.value;
+
+			const data = {
+			    prompt: prompt,
+			    max_tokens: 50,
+			    temperature: 0.7,
+			    n: 1,
+			    stream: false,
+			    stop: '\n',
+			};
+
+			const headers = {
+			    'Content-Type': 'application/json',
+			    'Authorization': `Bearer ${API_KEY}`,
+			};
+
+			try {
+			    const response = await axios({
+			        method: 'post',
+			        url: `${API_URL}engines/davinci-codex/completions`,
+			        headers: headers,
+			        data: data
+			    });
+
+			    const answerElement = document.getElementById('answer');
+			    answerElement.innerHTML = response.data.choices[0].text;
+			} catch (error) {
+			    console.error(error);
+			}
+		}
+	</script>
+</body>
 </html>
