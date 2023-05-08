@@ -7,7 +7,6 @@
 	<h1>Ask a Question:</h1>
 	<input type="text" id="query-input">
 	<button onclick="generateAnswer()">Generate Answer</button>
-	<h2 id="answer" style="text-align: center;"></h2>
 
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
@@ -40,12 +39,15 @@
 			        data: data
 			    });
 
-			    const answerElement = document.getElementById('answer');
-			    answerElement.innerHTML = response.data.choices[0].text;
+			    const generatedText = response.data.choices[0].text;
+			    const resultElement = document.getElementById('result');
+			    resultElement.innerText = generatedText;
 			} catch (error) {
 			    console.error(error);
+			    alert('Error generating answer: ' + error.message);
 			}
 		}
 	</script>
+	<h2 id="result" style="text-align: center;"></h2>
 </body>
 </html>
